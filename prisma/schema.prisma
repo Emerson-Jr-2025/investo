@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  date        DateTime
+  type        String
+  method      String
+  amount      Decimal  @db.Decimal(10, 2)
+  description String
+  category    String
+  account     String
+  status      String
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model TelegramDraft {
+  id          String   @id @default(cuid())
+  chatId      String
+  type        String
+  amount      Float
+  description String
+  category    String
+  method      String
+  date        String
+  createdAt   DateTime @default(now())
+}
+
+model Bill {
+  id          String    @id @default(cuid())
+  description String
+  amount      Decimal   @db.Decimal(10, 2)
+  dueDate     DateTime
+  type        String    // "pagar" | "receber"
+  status      String    // "pendente" | "quitado"
+  category    String
+  account     String
+  recurrence  String    // "unica" | "mensal" | "semanal" | "anual"
+  notes       String?
+  paidAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
