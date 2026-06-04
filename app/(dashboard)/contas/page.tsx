@@ -2,6 +2,7 @@ import { verifySession } from '@/lib/dal'
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import { quitarConta, deleteBill } from '@/app/actions/contas'
+import type { Bill } from '@prisma/client'
 
 const formatCurrency = (v: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v)
@@ -36,16 +37,16 @@ export default async function ContasPage() {
     orderBy: [{ status: 'asc' }, { dueDate: 'asc' }],
   })
 
-  const pendentes = bills.filter((b) => b.status === 'pendente')
-  const quitadas = bills.filter((b) => b.status === 'quitado')
+  const pendentes = bills.filter((b: Bill) => b.status === 'pendente')
+  const quitadas = bills.filter((b: Bill) => b.status === 'quitado')
 
   const totalPagar = pendentes
-    .filter((b) => b.type === 'pagar')
-    .reduce((s, b) => s + Number(b.amount), 0)
+    .filter((b: Bill) => b.type === 'pagar')
+    .reduce((s: number, b: Bill) => s + Number(b.amount), 0)
 
   const totalReceber = pendentes
-    .filter((b) => b.type === 'receber')
-    .reduce((s, b) => s + Number(b.amount), 0)
+    .filter((b: Bill) => b.type === 'receber')
+    .reduce((s: number, b: Bill) => s + Number(b.amount), 0)
 
   return (
     <div className="space-y-5">
