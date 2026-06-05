@@ -1,11 +1,8 @@
 import { verifySession } from '@/lib/dal'
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import type { Bill } from '@prisma/client'
-
-const MonthlyChart = dynamic(() => import('@/components/charts/MonthlyChart'), { ssr: false })
-const CategoryChart = dynamic(() => import('@/components/charts/CategoryChart'), { ssr: false })
+import ChartsSection from '@/components/charts/ChartsSection'
 
 const fmt = (v: number) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v)
@@ -28,7 +25,7 @@ export default async function DashboardPage() {
   const [
     totalEntradas, totalSaidas,
     entradasMes, saidasMes,
-    entradasMesPassado, saidasMesPassado,
+    entradasMesAnterior, saidasMesAnterior,
     transactions,
     contasAlerta,
     txLast6Months,
@@ -55,11 +52,11 @@ export default async function DashboardPage() {
   const saldoTotal = Number(totalEntradas._sum.amount ?? 0) - Number(totalSaidas._sum.amount ?? 0)
   const receitasMes = Number(entradasMes._sum.amount ?? 0)
   const despesasMes = Number(saidasMes._sum.amount ?? 0)
-  const receitasMesPassado = Number(entradasMesPassado._sum.amount ?? 0)
-  const saidasMesPassado = Number(saidasMesPassado._sum.amount ?? 0)
+  const receitasMesPassado = Number(entradasMesAnterior._sum.amount ?? 0)
+  const despesasMesPassado = Number(saidasMesAnterior._sum.amount ?? 0)
 
   const pctReceitas = receitasMesPassado > 0 ? ((receitasMes - receitasMesPassado) / receitasMesPassado) * 100 : 0
-  const pctDespesas = saidasMesPassado > 0 ? ((despesasMes - saidasMesPassado) / saidasMesPassado) * 100 : 0
+  const pctDespesas = despesasMesPassado > 0 ? ((despesasMes - despesasMesPassado) / despesasMesPassado) * 100 : 0
 
   // Dados do gráfico mensal (últimos 6 meses)
   const monthlyMap: Record<string, { receitas: number; despesas: number }> = {}
@@ -148,28 +145,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* ── Gráficos ─── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-        {/* Gráfico mensal */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-sm font-semibold text-slate-900">Receitas vs Despesas</h2>
-              <p className="text-slate-400 text-xs mt-0.5">Últimos 6 meses</p>
-            </div>
-          </div>
-          <MonthlyChart data={chartData} />
-        </div>
-
-        {/* Gráfico por categoria */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
-          <div className="mb-4">
-            <h2 className="text-sm font-semibold text-slate-900">Despesas por Categoria</h2>
-            <p className="text-slate-400 text-xs mt-0.5">Este mês</p>
-          </div>
-          <CategoryChart data={categoryData} />
-        </div>
-      </div>
+      <ChartsSection monthlyData={chartData} categoryData={categoryData} />
 
       {/* ── Linha inferior: transações + alertas ─── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
