@@ -2,7 +2,7 @@ import { verifySession } from '@/lib/dal'
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import { quitarConta, deleteBill } from '@/app/actions/contas'
-import type { Bill } from '@prisma/client'
+import type { Bill, Prisma } from '@prisma/client'
 import FiltrosContas from '@/components/contas/FiltrosContas'
 import { Suspense } from 'react'
 
@@ -46,7 +46,7 @@ export default async function ContasPage({
   const dataFim = params.dataFim ? new Date(params.dataFim + 'T23:59:59') : undefined
 
   // Monta o filtro dinamicamente
-  const where: Parameters<typeof prisma.bill.findMany>[0]['where'] = {}
+  const where: Prisma.BillWhereInput = {}
   if (statusFiltro !== 'todas') where.status = statusFiltro
   if (tipo && tipo !== 'todas') where.type = tipo
   if (recorrencia && recorrencia !== 'todas') where.recurrence = recorrencia
