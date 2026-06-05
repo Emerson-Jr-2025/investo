@@ -41,7 +41,7 @@ export default function MonthlyChart({ data }: Props) {
           width={48}
         />
         <Tooltip
-          formatter={(value: number) => fmt(value)}
+          formatter={(value) => fmt(Number(value))}
           contentStyle={{
             background: '#0f172a',
             border: 'none',
