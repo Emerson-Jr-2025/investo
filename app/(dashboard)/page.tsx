@@ -131,6 +131,13 @@ export default async function DashboardPage() {
           <span className="text-lg">📅</span>
           Contas
         </Link>
+        <Link
+          href="/investimentos"
+          className="flex flex-col items-center justify-center gap-1 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 font-medium py-3 rounded-xl transition text-xs text-center shadow-sm"
+        >
+          <span className="text-lg">📊</span>
+          Investimentos
+        </Link>
       </div>
 
       {/* Transações Recentes */}

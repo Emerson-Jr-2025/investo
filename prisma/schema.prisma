@@ -28,6 +28,17 @@ model Transaction {
   updatedAt   DateTime @updatedAt
 }
 
+model Investment {
+  id        String   @id @default(cuid())
+  ticker    String?
+  name      String
+  type      String   // "acao" | "fii" | "crypto" | "renda_fixa" | "outro"
+  quantity  Float
+  avgPrice  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model TelegramDraft {
   id          String   @id @default(cuid())
   chatId      String

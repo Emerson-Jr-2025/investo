@@ -10,18 +10,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <span className="text-2xl">💰</span>
             <span className="text-xl font-bold text-gray-900">Investo</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/contas"
-              className="text-sm text-gray-600 hover:text-gray-900 transition px-3 py-1.5 rounded-lg hover:bg-gray-100 font-medium"
-            >
-              📅 Contas
+          <div className="flex items-center gap-1">
+            <Link href="/investimentos" className="text-sm text-gray-600 hover:text-gray-900 transition px-2.5 py-1.5 rounded-lg hover:bg-gray-100 font-medium">
+              📊
             </Link>
-            <Link
-              href="/extrato"
-              className="text-sm text-gray-600 hover:text-gray-900 transition px-3 py-1.5 rounded-lg hover:bg-gray-100 font-medium"
-            >
-              📄 Importar
+            <Link href="/contas" className="text-sm text-gray-600 hover:text-gray-900 transition px-2.5 py-1.5 rounded-lg hover:bg-gray-100 font-medium">
+              📅
+            </Link>
+            <Link href="/extrato" className="text-sm text-gray-600 hover:text-gray-900 transition px-2.5 py-1.5 rounded-lg hover:bg-gray-100 font-medium">
+              📄
             </Link>
             <form action={logout}>
               <button
